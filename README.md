@@ -1,6 +1,6 @@
 # `O*NET` Labour Market Statistics
 
-Experiments for use of labour market statistics from O*Net online
+Experiments for use of US labour market statistics from `O*NET online` in Norweigan digital career management websites. Category names, descriptions and occupation title have been translated to Norwegian (bokmål) to check relevance in Norwegian labour market context. 
 
 Databases of O*Net are released in common database formats. [All files may be downloaded from onetcenter.org](https://www.onetcenter.org/database.html#individual-files). 
 
