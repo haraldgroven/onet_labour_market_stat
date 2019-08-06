@@ -837,3 +837,28 @@ INNER JOIN work_context_categories WCC ON (T.element_id = WCC.element_id)
 -- WHERE T.onetsoc_code = "15-1134.00" # eksempelyrke
 ;
 
+
+
+
+# 1 match
+
+
+CREATE OR REPLACE VIEW v_job_zones AS
+
+SELECT
+	T.onetsoc_code AS soc_code,
+	SOC.title AS soc_title,
+	"job_zones" AS onettype,
+	T.job_zone,
+	JZR.name,
+	JZR.experience,
+	JZR.education,
+	JZR.job_training,
+	JZR.examples,
+	JZR.svp_range,
+	T.date_updated 
+FROM onet.job_zones T
+INNER JOIN occupation_data SOC ON (T.onetsoc_code = SOC.onetsoc_code)
+INNER JOIN job_zone_reference JZR ON (T.job_zone = JZR.job_zone)
+-- WHERE T.onetsoc_code = "15-1134.00" # eksempelyrke
+;
