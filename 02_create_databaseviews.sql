@@ -545,6 +545,7 @@ INNER JOIN occupation_data SOC ON (T.onetsoc_code = SOC.onetsoc_code)
 -- WHERE T.onetsoc_code = "15-1134.00" # eksempelyrke
 ;
 
+DROP TABLE IF EXISTS x_usbls_jobdescriptions_soc ; 
 CREATE TABLE x_usbls_jobdescriptions_soc
 SELECT
 	soc_code,
