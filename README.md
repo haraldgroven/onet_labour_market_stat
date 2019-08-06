@@ -18,8 +18,34 @@ Each occupational title and code is based on the 2010 version of the Standard Oc
 
 the `O*NET` database, containing information on hundreds of standardized and occupation-specific descriptors. The database is continually updated by surveying a broad range of workers from each occupation. Information from this freely available database forms the heart of `O*NET` OnLine, the interactive application for exploring and searching occupations. The database also provides the basis for our Career Exploration Tools, a set of valuable assessment instruments for workers and students looking to find or change careers. Every occupation requires a different mix of knowledge, skills, and abilities, and is performed using a variety of activities and tasks. These distinguishing characteristics of an occupation are described by the `O*NET` Content Model, which encapsulates the key features of an occupation into a standardized, measurable set of variables called "descriptors". The hierarchical model starts with six domains, describing the day-to-day aspects of the job and the qualifications and interests of the typical worker. The model expands to 277 descriptors collected by the `O*NET` program (...)*
 
-# Install 
+
+## Content types  
+* Tasks
+* Tools & Technology
+* Knowledge
+* Skills
+* Abilities
+* Work Activities
+* Work Context
+* Job Zone
+* Education
+* Credentials
+* Interests
+* Work Styles
+* Work Values
+* Related Occupations
+* Crosswalk
+* Wages & Employment
+* Job Openings
+* Additional Information
+
+
+
+## Install 
 Dependencies:  
 * MacOS, files dowloaded to home folder in `Downloads/onet` (TODO set to path by settings file)
 * Mysql, with shell access to passwordless login. 
 * `O*NET` Data will be imported to a database called `onet` 
+* Url to data files change for each version, so this must be changed to recent version manually
+
+
