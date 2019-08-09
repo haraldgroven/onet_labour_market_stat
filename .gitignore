@@ -1,3 +1,7 @@
+
+# keep downloaded data maintained elsewhere away from version control
+onet_database_download/*
+
 # R 
 # History files
 .Rhistory
