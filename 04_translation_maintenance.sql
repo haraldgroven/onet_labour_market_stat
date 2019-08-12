@@ -141,6 +141,6 @@ WHERE EN.iwa_title <> IFNULL(EN.iwa_title, "missing")
 ;
 
 
-SELECT * 
+SELECT COUNT(*) 
 FROM translation_maintenance_nb
 ; 
