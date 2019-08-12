@@ -21,15 +21,15 @@ onet_url="https://www.onetcenter.org/dl_files/database/db_24_0_mysql.zip"
 cd /srv/onet_labour_market_stat
 
 echo "importing from " $onet_url 
-echo into `pwd`
+echo "into " pwd
 echo "downloading data to dir onet_database_download"
 
 # store downloaded file in a dir not versioned by git (exempt in .gitignore)
 rm -rf onet_database_download
 mkdir -p onet_database_download
-cd onet_database_download
+cd onet_database_download && echo "wd onet_database_download"
 # download mysql data, extract without directory structure 
-curl -O $onet_url && tar xzf *mysql.zip --strip 1
+curl -O $onet_url && tar xzf *mysql.zip --strip 1 && echo "curl download zip with database"
 rm *.zip
 
 # empty/re-create database
@@ -40,11 +40,13 @@ mysql -e "CREATE DATABASE IF NOT EXISTS onet" && echo "Database onet (re-)create
 # merge these into one file, onet_db_all.sql 
 cat [0-9][0-9]_*.sql > onet_db_all.sql && echo "All sql-files merged into file onet_db_all "
 
-mysql -Donet < onet_db_all.sql && echo "onet data imported to mysql"
+echo "import data from onet_db_all.sql"
+mysql -Donet < onet_db_all.sql && echo "finished importing downloaded data from O*Net "
 
 # download tables for storing Norwegian translations of content 
 # curl -O "https://raw.githubusercontent.com/haraldgroven/onet_labour_market_stat/master/03_translation_storage.sql"
-mysql -Donet < ../03_translation_storage.sql && echo "created tables from 03_translation_storage.sql to store translations of content "
+
+mysql -Donet < ../03_translation_storage.sql && echo "finished creating tables from 03_translation_storage.sql "
 
 # clean up mess
 # rm onet_db_all.sql 
