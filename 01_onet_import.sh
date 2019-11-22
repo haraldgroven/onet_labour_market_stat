@@ -15,7 +15,7 @@ echo "Download from https://www.onetcenter.org/database.html#all-files"
 # Settings. These must be set before import
 
 # location of zipped database files of current onet release 
-onet_url="https://www.onetcenter.org/dl_files/database/db_24_0_mysql.zip" 
+onet_url="https://www.onetcenter.org/dl_files/database/db_24_1_mysql.zip"
 # my working directory. Also location of these Git-files
 # change or comment out if you use somewhere else!
 cd /srv/onet_labour_market_stat
