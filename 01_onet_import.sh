@@ -53,20 +53,25 @@ mysql -Donet < ../03_translation_storage.sql && echo "finished creating tables f
 
 # import translations
 
+# copy to directory readable by database
+# Solves various LOCAL INFILE problems
+rsync -avz translations/ /tmp/translations/
+
+
 mysql -Donet -e "TRUNCATE content_model_reference_nb"
-mysql --local-infile=1 -Donet -e "LOAD DATA LOCAL INFILE 'translations/content_model_reference_nb.tsv' REPLACE INTO TABLE content_model_reference_nb FIELDS TERMINATED BY '\t' ENCLOSED BY '\"' IGNORE 1 LINES"
+mysql -Donet -e "LOAD DATA INFILE '/tmp/translations/content_model_reference_nb.tsv' REPLACE INTO TABLE content_model_reference_nb FIELDS TERMINATED BY '\t' ENCLOSED BY '\"' IGNORE 1 LINES"
 echo "import of content_model_reference_nb"
 
 mysql -Donet -e "TRUNCATE dwa_reference_nb"
-mysql --local-infile=1 -Donet -e "LOAD DATA LOCAL INFILE 'translations/dwa_reference_nb.tsv' REPLACE INTO TABLE dwa_reference_nb FIELDS TERMINATED BY '\t' ENCLOSED BY '\"' IGNORE 1 LINES"
+mysql -Donet -e "LOAD DATA INFILE '/tmp/translations/dwa_reference_nb.tsv' REPLACE INTO TABLE dwa_reference_nb FIELDS TERMINATED BY '\t' ENCLOSED BY '\"' IGNORE 1 LINES"
 echo "import of dwa_reference_nb"
 
 mysql -Donet -e "TRUNCATE iwa_reference_nb"
-mysql --local-infile=1 -Donet -e "LOAD DATA LOCAL INFILE 'translations/iwa_reference_nb.tsv' REPLACE INTO TABLE iwa_reference_nb FIELDS TERMINATED BY '\t' ENCLOSED BY '\"' IGNORE 1 LINES"
+mysql -Donet -e "LOAD DATA INFILE '/tmp/translations/iwa_reference_nb.tsv' REPLACE INTO TABLE iwa_reference_nb FIELDS TERMINATED BY '\t' ENCLOSED BY '\"' IGNORE 1 LINES"
 echo "import of iwa_reference_nb"
 
 mysql -Donet -e "TRUNCATE occupation_data_nb"
-mysql --local-infile=1 -Donet -e "LOAD DATA LOCAL INFILE 'translations/occupation_data_nb.tsv' REPLACE INTO TABLE occupation_data_nb FIELDS TERMINATED BY '\t' ENCLOSED BY '\"' IGNORE 1 LINES"
+mysql -Donet -e "LOAD DATA INFILE '/tmp/translations/occupation_data_nb.tsv' REPLACE INTO TABLE occupation_data_nb FIELDS TERMINATED BY '\t' ENCLOSED BY '\"' IGNORE 1 LINES"
 echo "import of occupation_data_nb"
 
 # set new wd
