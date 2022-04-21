@@ -5,9 +5,6 @@
 # Download from
 # https://www.onetcenter.org/database.html#all-files
 # store data in MySQL database "onet"
-# version 0.1 - 2015-01
-# version 0.2 - 2018-09
-# version 0.3 - 2019-01
 # version 0.4 - 2019-08
 
 echo "Download from https://www.onetcenter.org/database.html#all-files"
@@ -15,7 +12,7 @@ echo "Download from https://www.onetcenter.org/database.html#all-files"
 # Settings. These must be set before import
 
 # location of zipped database files of current onet release
-onet_url="https://www.onetcenter.org/dl_files/database/db_26_0_mysql.zip"
+onet_url="https://www.onetcenter.org/dl_files/database/db_26_2_mysql.zip"
 # my working directory. Also location of these Git-files
 # change or comment out if you use somewhere else!
 cd /srv/onet_labour_market_stat
