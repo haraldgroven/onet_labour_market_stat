@@ -15,7 +15,7 @@ echo "Download from https://www.onetcenter.org/database.html#all-files"
 onet_url="https://www.onetcenter.org/dl_files/database/db_26_2_mysql.zip"
 # my working directory. Also location of these Git-files
 # change or comment out if you use somewhere else!
-cd /srv/onet_labour_market_stat
+# cd srv/onet_labour_market_stat
 
 echo "importing from " $onet_url
 echo "into " pwd
@@ -52,7 +52,7 @@ mysql -Donet < ../03_translation_storage.sql && echo "finished creating tables f
 
 # copy to directory readable by database
 # Solves various LOCAL INFILE problems
-rsync -avz translations/ /tmp/translations/
+rsync -avz ../translations/ /tmp/translations/
 
 
 mysql -Donet -e "TRUNCATE content_model_reference_nb"
@@ -78,6 +78,10 @@ cd ..
 mysql -Donet < 04_translation_maintenance.sql
 echo "number of entities which may need translation "
 
+
+mysql -Donet < 02_create_databaseviews.sql
+mysql -Donet < 03_translation_storage.sql
+mysql -Donet < 04_translation_maintenance.sql
 
 echo " "
 echo "finished import"
