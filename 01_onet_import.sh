@@ -81,4 +81,3 @@ echo "number of entities which may need translation "
 
 echo " "
 echo "finished import"
-
