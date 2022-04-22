@@ -40,6 +40,9 @@ cat [0-9][0-9]_*.sql > onet_db_all.sql && echo "All sql-files merged into file o
 echo "import data from onet_db_all.sql"
 mysql -Donet < onet_db_all.sql && echo "finished importing downloaded data from O*Net "
 
+# c
+mysql -Donet < 02_create_databaseviews.sql && echo "created database views "
+
 # download tables for storing Norwegian translations of content
 # curl -O "https://raw.githubusercontent.com/haraldgroven/onet_labour_market_stat/master/03_translation_storage.sql"
 
@@ -57,18 +60,22 @@ rsync -avz ../translations/ /tmp/translations/
 
 mysql -Donet -e "TRUNCATE content_model_reference_nb"
 mysql -Donet -e "LOAD DATA INFILE '/tmp/translations/content_model_reference_nb.tsv' REPLACE INTO TABLE content_model_reference_nb FIELDS TERMINATED BY '\t' ENCLOSED BY '\"' IGNORE 1 LINES"
+mysql -Donet -e "SELECT 'ant. oversettinger fra content_model_reference_nb ' AS kilde, COUNT(*) FROM content_model_reference_nb"
 echo "import of content_model_reference_nb"
 
 mysql -Donet -e "TRUNCATE dwa_reference_nb"
 mysql -Donet -e "LOAD DATA INFILE '/tmp/translations/dwa_reference_nb.tsv' REPLACE INTO TABLE dwa_reference_nb FIELDS TERMINATED BY '\t' ENCLOSED BY '\"' IGNORE 1 LINES"
+mysql -Donet -e "SELECT 'ant. oversettinger fra dwa_reference_nb ' AS kilde, COUNT(*) FROM dwa_reference_nb"
 echo "import of dwa_reference_nb"
 
 mysql -Donet -e "TRUNCATE iwa_reference_nb"
 mysql -Donet -e "LOAD DATA INFILE '/tmp/translations/iwa_reference_nb.tsv' REPLACE INTO TABLE iwa_reference_nb FIELDS TERMINATED BY '\t' ENCLOSED BY '\"' IGNORE 1 LINES"
+mysql -Donet -e "SELECT 'ant. oversettinger fra iwa_reference_nb ' AS kilde, COUNT(*) FROM iwa_reference_nb"
 echo "import of iwa_reference_nb"
 
 mysql -Donet -e "TRUNCATE occupation_data_nb"
 mysql -Donet -e "LOAD DATA INFILE '/tmp/translations/occupation_data_nb.tsv' REPLACE INTO TABLE occupation_data_nb FIELDS TERMINATED BY '\t' ENCLOSED BY '\"' IGNORE 1 LINES"
+mysql -Donet -e "SELECT 'ant. oversettinger fra occupation_data_nb ' AS kilde, COUNT(*) FROM occupation_data_nb"
 echo "import of occupation_data_nb"
 
 # set new wd
@@ -79,9 +86,8 @@ mysql -Donet < 04_translation_maintenance.sql
 echo "number of entities which may need translation "
 
 
-mysql -Donet < 02_create_databaseviews.sql
-mysql -Donet < 03_translation_storage.sql
-mysql -Donet < 04_translation_maintenance.sql
+
+ 
 
 echo " "
 echo "finished import"
