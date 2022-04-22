@@ -35,7 +35,7 @@ SELECT
 -- 	EN.`description`,
 -- 	NB.`description`,
 -- 	NB.`description_nb`,
-	IF(EN.onetsoc_code IS NULL, "New occupation", "Title changed") AS todo
+	IF(NB.onetsoc_code IS NULL, "New occupation", "Title changed") AS todo
 FROM occupation_data EN
 LEFT JOIN occupation_data_nb NB ON (EN.onetsoc_code = NB.onetsoc_code)
 WHERE EN.title <> IFNULL(NB.title, "missing")
@@ -51,7 +51,7 @@ SELECT
 	EN.`description` AS string_imported,
 	NB.`description` AS string_untranslated,
 	NB.`description_nb` AS string_translated,
-	IF(EN.onetsoc_code IS NULL, "New description", "Description changed") AS todo
+	IF(NB.onetsoc_code IS NULL, "New description", "Description changed") AS todo
 FROM occupation_data EN
 LEFT JOIN occupation_data_nb NB ON (EN.onetsoc_code = NB.onetsoc_code)
 WHERE EN.`description` <> IFNULL(NB.`description`, "missing")
@@ -75,7 +75,7 @@ SELECT
 -- 	EN.`description`,
 -- 	NB.`description`,
 -- 	NB.`description_nb`,
-	IF(EN.element_id IS NULL, "New element_name", "Element_name changed") AS todo
+	IF(NB.element_id IS NULL, "New element_name", "Element_name changed") AS todo
 FROM content_model_reference EN
 LEFT JOIN content_model_reference_nb NB ON (EN.element_id = NB.element_id)
 WHERE EN.element_name <> IFNULL(NB.element_name, "missing")
@@ -91,7 +91,7 @@ SELECT
 	EN.`description` AS string_imported,
 	NB.`description` AS string_untranslated,
 	NB.`description_nb` AS string_translated,
-	IF(EN.element_id IS NULL, "New element_description", "Element_description changed") AS todo
+	IF(NB.element_id IS NULL, "New element_description", "Element_description changed") AS todo
 FROM content_model_reference EN
 LEFT JOIN content_model_reference_nb NB ON (EN.element_id = NB.element_id)
 WHERE EN.`description` <> IFNULL(NB.`description`, "missing")
@@ -114,7 +114,7 @@ SELECT
 -- 	NB.element_id,
 -- 	NB.iwa_id,
 -- 	NB.dwa_id,
-	IF(EN.dwa_id IS NULL, "New DWA_title", "DWA_title changed") AS todo
+	IF(NB.dwa_id IS NULL, "New DWA_title", "DWA_title changed") AS todo
 FROM dwa_reference EN
 LEFT JOIN dwa_reference_nb NB ON (EN.dwa_id = NB.dwa_id)
 WHERE EN.dwa_title <> IFNULL(EN.dwa_title, "missing")
@@ -134,13 +134,13 @@ SELECT
 	NB.iwa_title_nb AS string_translated,	
 -- 	NB.element_id,
 -- 	NB.iwa_id,
-	IF(EN.iwa_id IS NULL, "New IWA_title", "IWA_title changed") AS todo
+	IF(NB.iwa_id IS NULL, "New IWA_title", "IWA_title changed") AS todo
 FROM iwa_reference EN 
 LEFT JOIN iwa_reference_nb NB ON (EN.iwa_id = NB.iwa_id)
 WHERE EN.iwa_title <> IFNULL(EN.iwa_title, "missing")
 ;
 
 
-SELECT COUNT(*) 
+SELECT "ant. strenger som trenger oversetting" AS msg, COUNT(*) 
 FROM translation_maintenance_nb
 ; 
