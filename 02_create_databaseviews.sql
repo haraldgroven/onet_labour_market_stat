@@ -514,7 +514,49 @@ SELECT
 	i_not_relevant,
 	date_updated,
 	domain_source
-FROM v_work_activities ; # 39524 rows inserted.
+FROM v_work_activities
+; # 39524 rows inserted.
+
+
+
+-- TODO
+-- insert interests into x_usbls_survey_soc
+INSERT INTO x_usbls_survey_soc
+SELECT
+	soc_kode,
+	soc_yrke_en,
+	'' AS soc_yrke_nb,
+	onet_type,
+	CONCAT('RIASEC_', LEFT(element_name_en, 1)) AS element_id,
+	element_name_en,
+	'' AS element_name_nb,
+	element_description_en,
+	'' AS element_description_nb,
+-- 	scale_name,
+-- 	minimum,
+-- 	maximum,
+	((data_value-1)*(100/6)) AS l_data_value,
+	NULL AS l_se,
+	NULL AS l_lower_ci,
+	NULL AS l_upper_ci,
+	'' AS l_recommend_suppress,
+	'' AS l_not_relevant,
+	((data_value-1)*(100/6)) AS i_data_value,
+	NULL AS i_se,
+	NULL AS i_lower_ci,
+	NULL AS i_upper_ci,
+	'' AS i_recommend_suppress,
+	'' AS i_not_relevant,
+	date_updated,
+	domain_source
+FROM v_interests
+WHERE scale_name = 'Occupational Interests'
+-- sjekk opp hva brukes "Occupational Interest High-Point" til?
+-- ORDER BY RAND()
+;
+
+
+
 
 
 -- job_zone_reference
