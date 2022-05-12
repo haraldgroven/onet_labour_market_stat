@@ -263,7 +263,7 @@ SELECT
 	SOC.title AS soc_yrke_en,
 	'interests' AS onet_type,
 	-- SOC.description AS soc_description,
-	-- T.element_id,
+    T.element_id,
 	CMR.element_name AS element_name_en,
 	CMR.description AS element_description_en,
 	-- T.scale_id,
@@ -343,9 +343,9 @@ SELECT
 	ONET.onet_type,
 	ONET.element_id,
 	ONET.element_name_en,
-	CMR_NB.element_name_nb AS element_name_nb,
+	NB.element_name_nb AS element_name_nb,
 	ONET.element_description_en,
-    CMR_NB.description_nb AS description_nb,
+    NB.description_nb AS description_nb,
 	(l_data_value*(100/7)) AS l_data_value,
 	(l_se*(100/7)) AS l_se,
 	(l_lower_ci*(100/7)) AS l_lower_ci,
@@ -361,7 +361,7 @@ SELECT
 	date_updated,
 	domain_source
 FROM v_abilities ONET
-LEFT JOIN content_model_reference_nb CMR_NB ON (CMR_NB.element_id = ONET.element_id)
+LEFT JOIN content_model_reference_nb NB ON (NB.element_id = ONET.element_id)
 ; # 50128 rows inserted.
 
 -- insert knowledge into x_usbls_survey_soc
@@ -374,9 +374,9 @@ SELECT
 	ONET.onet_type,
 	ONET.element_id,
 	ONET.element_name_en,
-	CMR_NB.element_name_nb AS element_name_nb,
+	NB.element_name_nb AS element_name_nb,
 	ONET.element_description_en,
-    CMR_NB.description_nb AS description_nb,
+    NB.description_nb AS description_nb,
 	(l_data_value*(100/7)) AS l_data_value,
 	(l_se*(100/7)) AS l_se,
 	(l_lower_ci*(100/7)) AS l_lower_ci,
@@ -392,7 +392,7 @@ SELECT
 	date_updated,
 	domain_source
 FROM v_knowledge ONET
-LEFT JOIN content_model_reference_nb CMR_NB ON (CMR_NB.element_id = ONET.element_id)
+LEFT JOIN content_model_reference_nb NB ON (NB.element_id = ONET.element_id)
 ; # 31812 rows inserted.
 
 -- insert skills into x_usbls_survey_soc
@@ -405,9 +405,9 @@ SELECT
 	ONET.onet_type,
 	ONET.element_id,
 	ONET.element_name_en,
-	CMR_NB.element_name_nb AS element_name_nb,
+	NB.element_name_nb AS element_name_nb,
 	ONET.element_description_en,
-    CMR_NB.description_nb AS description_nb,
+    NB.description_nb AS description_nb,
 	(l_data_value*(100/7)) AS l_data_value,
 	(l_se*(100/7)) AS l_se,
 	(l_lower_ci*(100/7)) AS l_lower_ci,
@@ -423,7 +423,7 @@ SELECT
 	date_updated,
 	domain_source
 FROM v_skills ONET
-LEFT JOIN content_model_reference_nb CMR_NB ON (CMR_NB.element_id = ONET.element_id)
+LEFT JOIN content_model_reference_nb NB ON (NB.element_id = ONET.element_id)
 ; # 33740 rows inserted.
 
 
@@ -437,9 +437,9 @@ SELECT
 	ONET.onet_type,
 	ONET.element_id,
 	ONET.element_name_en,
-	CMR_NB.element_name_nb AS element_name_nb,
+	NB.element_name_nb AS element_name_nb,
 	ONET.element_description_en,
-    CMR_NB.description_nb AS description_nb,
+    NB.description_nb AS description_nb,
 	(l_data_value*(100/7)) AS l_data_value,
 	(l_se*(100/7)) AS l_se,
 	(l_lower_ci*(100/7)) AS l_lower_ci,
@@ -455,66 +455,68 @@ SELECT
 	date_updated,
 	domain_source
 FROM v_work_styles ONET
-LEFT JOIN content_model_reference_nb CMR_NB ON (CMR_NB.element_id = ONET.element_id)
+LEFT JOIN content_model_reference_nb NB ON (NB.element_id = ONET.element_id)
 ; # 15408 rows inserted.
 
 -- insert work_values into x_usbls_survey_soc
 INSERT INTO x_usbls_survey_soc
 SELECT
 	-- NULL AS lnr,
-	soc_kode,
-	soc_yrke_en,
+	ONET.soc_kode,
+	ONET.soc_yrke_en,
 	'' AS soc_yrke_nb,
-	onet_type,
-	element_id,
-	element_name_en,
-	'' AS element_name_nb,
-	element_description_en,
-    '' AS description_nb,
-	(l_data_value*(100/7)) AS l_data_value,
-	(l_se*(100/7)) AS l_se,
-	(l_lower_ci*(100/7)) AS l_lower_ci,
-	(l_upper_ci*(100/7)) AS l_upper_ci,
-	l_recommend_suppress,
-	l_not_relevant,
-	(25*(i_data_value-1)) AS i_data_value,
-	(25*(i_se)) AS i_se,
-	(25*(i_lower_ci-1)) AS i_lower_ci,
-	(25*(i_upper_ci-1)) AS i_upper_ci,
-	i_recommend_suppress,
-	i_not_relevant,
-	date_updated,
-	domain_source
-FROM v_work_values ; # 8766 rows inserted.
+	ONET.onet_type,
+	ONET.element_id,
+	ONET.element_name_en,
+	NB.element_name_nb AS element_name_nb,
+	ONET.element_description_en,
+    NB.description_nb AS description_nb,
+	(ONET.l_data_value*(100/7)) AS l_data_value,
+	(ONET.l_se*(100/7)) AS l_se,
+	(ONET.l_lower_ci*(100/7)) AS l_lower_ci,
+	(ONET.l_upper_ci*(100/7)) AS l_upper_ci,
+	ONET.l_recommend_suppress,
+	ONET.l_not_relevant,
+	(25*(ONET.i_data_value-1)) AS i_data_value,
+	(25*(ONET.i_se)) AS i_se,
+	(25*(ONET.i_lower_ci-1)) AS i_lower_ci,
+	(25*(ONET.i_upper_ci-1)) AS i_upper_ci,
+	ONET.i_recommend_suppress,
+	ONET.i_not_relevant,
+	ONET.date_updated,
+	ONET.domain_source
+FROM v_work_values ONET
+LEFT JOIN content_model_reference_nb NB ON (NB.element_id = ONET.element_id)
+; # 8766 rows inserted.
 
 -- insert work_activities into x_usbls_survey_soc
 INSERT INTO x_usbls_survey_soc
 SELECT
-	-- NULL AS lnr,
-	soc_kode,
-	soc_yrke_en,
+	ONET.soc_kode,
+	ONET.soc_yrke_en,
 	'' AS soc_yrke_nb,
-	onet_type,
-	element_id,
-	element_name_en,
-	'' AS element_name_nb,
-	element_description_en,
-    '' AS description_nb,
-	(l_data_value*(100/7)) AS l_data_value,
-	(l_se*(100/7)) AS l_se,
-	(l_lower_ci*(100/7)) AS l_lower_ci,
-	(l_upper_ci*(100/7)) AS l_upper_ci,
-	l_recommend_suppress,
-	l_not_relevant,
-	(25*(i_data_value-1)) AS i_data_value,
-	(25*(i_se)) AS i_se,
-	(25*(i_lower_ci-1)) AS i_lower_ci,
-	(25*(i_upper_ci-1)) AS i_upper_ci,
-	i_recommend_suppress,
-	i_not_relevant,
-	date_updated,
-	domain_source
-FROM v_work_activities
+	ONET.onet_type,
+	ONET.element_id,
+	ONET.element_name_en,
+	NB.element_name_nb AS element_name_nb,
+	ONET.element_description_en,
+    NB.description_nb AS description_nb,
+	(ONET.l_data_value*(100/7)) AS l_data_value,
+	(ONET.l_se*(100/7)) AS l_se,
+	(ONET.l_lower_ci*(100/7)) AS l_lower_ci,
+	(ONET.l_upper_ci*(100/7)) AS l_upper_ci,
+	ONET.l_recommend_suppress,
+	ONET.l_not_relevant,
+	(25*(ONET.i_data_value-1)) AS i_data_value,
+	(25*(ONET.i_se)) AS i_se,
+	(25*(ONET.i_lower_ci-1)) AS i_lower_ci,
+	(25*(ONET.i_upper_ci-1)) AS i_upper_ci,
+	ONET.i_recommend_suppress,
+	ONET.i_not_relevant,
+	ONET.date_updated,
+	ONET.domain_source
+FROM v_work_activities ONET
+LEFT JOIN content_model_reference_nb NB ON (ONET.element_id = NB.element_id)
 ; # 39524 rows inserted.
 
 
@@ -523,15 +525,15 @@ FROM v_work_activities
 -- insert interests into x_usbls_survey_soc
 INSERT INTO x_usbls_survey_soc
 SELECT
-	soc_kode,
-	soc_yrke_en,
+	ONET.soc_kode,
+	ONET.soc_yrke_en,
 	'' AS soc_yrke_nb,
 	onet_type,
-	CONCAT('RIASEC_', LEFT(element_name_en, 1)) AS element_id,
-	element_name_en,
-	'' AS element_name_nb,
-	element_description_en,
-	'' AS element_description_nb,
+	ONET.element_id,
+	ONET.element_name_en,
+	NB.element_name_nb AS element_name_nb,
+	ONET.element_description_en,
+	NB.description_nb AS element_description_nb,
 -- 	scale_name,
 -- 	minimum,
 -- 	maximum,
@@ -547,9 +549,10 @@ SELECT
 	NULL AS i_upper_ci,
 	'' AS i_recommend_suppress,
 	'' AS i_not_relevant,
-	date_updated,
-	domain_source
-FROM v_interests
+	ONET.date_updated,
+	ONET.domain_source
+FROM v_interests ONET
+LEFT JOIN content_model_reference_nb NB ON (ONET.element_id = NB.element_id)
 WHERE scale_name = 'Occupational Interests'
 -- sjekk opp hva brukes "Occupational Interest High-Point" til?
 -- ORDER BY RAND()
