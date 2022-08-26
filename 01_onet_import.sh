@@ -12,7 +12,7 @@ echo "Download from https://www.onetcenter.org/database.html#all-files"
 # Settings. These must be set before import
 
 # location of zipped database files of current onet release
-onet_url="https://www.onetcenter.org/dl_files/database/db_26_3_mysql.zip"
+onet_url="https://www.onetcenter.org/dl_files/database/db_27_0_mysql.zip"
 # my working directory. Also location of these Git-files
 # change or comment out if you use somewhere else!
 # cd srv/onet_labour_market_stat
@@ -40,13 +40,16 @@ cat [0-9][0-9]_*.sql > onet_db_all.sql && echo "All sql-files merged into file o
 echo "import data from onet_db_all.sql"
 mysql -Donet < onet_db_all.sql && echo "finished importing downloaded data from O*Net "
 
+# move to wd onet_labour_market_stat/
+cd ..
+
 # c
 mysql -Donet < 02_create_databaseviews.sql && echo "created database views "
 
 # download tables for storing Norwegian translations of content
 # curl -O "https://raw.githubusercontent.com/haraldgroven/onet_labour_market_stat/master/03_translation_storage.sql"
 
-mysql -Donet < ../03_translation_storage.sql && echo "finished creating tables from 03_translation_storage.sql "
+mysql -D onet < 03_translation_storage.sql && echo "finished creating tables from 03_translation_storage.sql "
 
 # clean up mess
 # rm onet_db_all.sql
@@ -55,7 +58,7 @@ mysql -Donet < ../03_translation_storage.sql && echo "finished creating tables f
 
 # copy to directory readable by database
 # Solves various LOCAL INFILE problems
-rsync -avz ../translations/ /tmp/translations/
+rsync -avz translations/ /tmp/translations/
 
 
 mysql -Donet -e "TRUNCATE content_model_reference_nb"
