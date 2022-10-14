@@ -82,4 +82,11 @@ CREATE TABLE occupation_data_nb (
 COMMENT='O*Net online occupation_data translated to Norwegian (bokmål)'
  ; 
 
-
+DROP TABLE IF EXISTS onet_uno_category_nb ;
+CREATE TABLE onet_uno_category_nb (
+	element_id varchar(16) NOT NULL,
+	onet_uno_category varchar(255) NOT NULL,
+	PRIMARY KEY (element_id)
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci
+COMMENT='categories used by Utdanning.no'
+;
