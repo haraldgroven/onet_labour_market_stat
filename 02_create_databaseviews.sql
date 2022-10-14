@@ -263,7 +263,7 @@ SELECT
 	SOC.title AS soc_yrke_en,
 	'interests' AS onet_type,
 	-- SOC.description AS soc_description,
-    T.element_id,
+	T.element_id,
 	CMR.element_name AS element_name_en,
 	CMR.description AS element_description_en,
 	-- T.scale_id,
@@ -273,6 +273,7 @@ FROM interests T
 INNER JOIN occupation_data SOC ON (T.onetsoc_code = SOC.onetsoc_code)
 INNER JOIN content_model_reference CMR ON (T.element_id= CMR.element_id)
 INNER JOIN scales_reference SR ON (T.scale_id = SR.scale_id)
+LEFT JOIN onet_uno_category_nb UNO ON (UNO.element_id = T.element_id)
 -- WHERE T.onetsoc_code = "15-1134.00" # eksempelyrke
 ;
 
@@ -321,6 +322,7 @@ CREATE TABLE IF NOT EXISTS x_usbls_survey_soc (
   i_not_relevant varchar(255) DEFAULT NULL,
   date_updated date DEFAULT NULL COMMENT 'sist oppdaterte data',
   domain_source varchar(128) NOT NULL COMMENT 'kilde for data',
+  onet_uno_category_nb varchar(128) NOT NULL COMMENT 'overkategorier på interessesider utdanning.no',
  -- PRIMARY KEY (lnr),
  UNIQUE(soc_kode, element_id),
  KEY soc_code (soc_kode),
@@ -345,7 +347,7 @@ SELECT
 	ONET.element_name_en,
 	NB.element_name_nb AS element_name_nb,
 	ONET.element_description_en,
-    NB.description_nb AS description_nb,
+	NB.description_nb AS description_nb,
 	(l_data_value*(100/7)) AS l_data_value,
 	(l_se*(100/7)) AS l_se,
 	(l_lower_ci*(100/7)) AS l_lower_ci,
@@ -359,9 +361,11 @@ SELECT
 	i_recommend_suppress,
 	i_not_relevant,
 	date_updated,
-	domain_source
+	domain_source,
+	IFNULL(UNO.onet_uno_category_nb, '') AS onet_uno_category_nb
 FROM v_abilities ONET
 LEFT JOIN content_model_reference_nb NB ON (NB.element_id = ONET.element_id)
+LEFT JOIN onet_uno_category_nb UNO ON (UNO.element_id = ONET.element_id)
 ; # 50128 rows inserted.
 
 -- insert knowledge into x_usbls_survey_soc
@@ -376,7 +380,7 @@ SELECT
 	ONET.element_name_en,
 	NB.element_name_nb AS element_name_nb,
 	ONET.element_description_en,
-    NB.description_nb AS description_nb,
+	NB.description_nb AS description_nb,
 	(l_data_value*(100/7)) AS l_data_value,
 	(l_se*(100/7)) AS l_se,
 	(l_lower_ci*(100/7)) AS l_lower_ci,
@@ -390,9 +394,11 @@ SELECT
 	i_recommend_suppress,
 	i_not_relevant,
 	date_updated,
-	domain_source
+	domain_source,
+	IFNULL(UNO.onet_uno_category_nb, '') AS onet_uno_category_nb
 FROM v_knowledge ONET
 LEFT JOIN content_model_reference_nb NB ON (NB.element_id = ONET.element_id)
+LEFT JOIN onet_uno_category_nb UNO ON (UNO.element_id = ONET.element_id)
 ; # 31812 rows inserted.
 
 -- insert skills into x_usbls_survey_soc
@@ -407,7 +413,7 @@ SELECT
 	ONET.element_name_en,
 	NB.element_name_nb AS element_name_nb,
 	ONET.element_description_en,
-    NB.description_nb AS description_nb,
+	NB.description_nb AS description_nb,
 	(l_data_value*(100/7)) AS l_data_value,
 	(l_se*(100/7)) AS l_se,
 	(l_lower_ci*(100/7)) AS l_lower_ci,
@@ -421,9 +427,11 @@ SELECT
 	i_recommend_suppress,
 	i_not_relevant,
 	date_updated,
-	domain_source
+	domain_source,
+	IFNULL(UNO.onet_uno_category_nb, '') AS onet_uno_category_nb
 FROM v_skills ONET
 LEFT JOIN content_model_reference_nb NB ON (NB.element_id = ONET.element_id)
+LEFT JOIN onet_uno_category_nb UNO ON (UNO.element_id = ONET.element_id)
 ; # 33740 rows inserted.
 
 
@@ -439,7 +447,7 @@ SELECT
 	ONET.element_name_en,
 	NB.element_name_nb AS element_name_nb,
 	ONET.element_description_en,
-    NB.description_nb AS description_nb,
+	NB.description_nb AS description_nb,
 	(l_data_value*(100/7)) AS l_data_value,
 	(l_se*(100/7)) AS l_se,
 	(l_lower_ci*(100/7)) AS l_lower_ci,
@@ -453,9 +461,11 @@ SELECT
 	i_recommend_suppress,
 	i_not_relevant,
 	date_updated,
-	domain_source
+	domain_source,
+	IFNULL(UNO.onet_uno_category_nb, '') AS onet_uno_category_nb
 FROM v_work_styles ONET
 LEFT JOIN content_model_reference_nb NB ON (NB.element_id = ONET.element_id)
+LEFT JOIN onet_uno_category_nb UNO ON (UNO.element_id = ONET.element_id)
 ; # 15408 rows inserted.
 
 -- insert work_values into x_usbls_survey_soc
@@ -470,7 +480,7 @@ SELECT
 	ONET.element_name_en,
 	NB.element_name_nb AS element_name_nb,
 	ONET.element_description_en,
-    NB.description_nb AS description_nb,
+	NB.description_nb AS description_nb,
 	(ONET.l_data_value*(100/7)) AS l_data_value,
 	(ONET.l_se*(100/7)) AS l_se,
 	(ONET.l_lower_ci*(100/7)) AS l_lower_ci,
@@ -484,9 +494,11 @@ SELECT
 	ONET.i_recommend_suppress,
 	ONET.i_not_relevant,
 	ONET.date_updated,
-	ONET.domain_source
+	ONET.domain_source,
+	IFNULL(UNO.onet_uno_category_nb, '') AS onet_uno_category_nb
 FROM v_work_values ONET
 LEFT JOIN content_model_reference_nb NB ON (NB.element_id = ONET.element_id)
+LEFT JOIN onet_uno_category_nb UNO ON (UNO.element_id = ONET.element_id)
 ; # 8766 rows inserted.
 
 -- insert work_activities into x_usbls_survey_soc
@@ -500,7 +512,7 @@ SELECT
 	ONET.element_name_en,
 	NB.element_name_nb AS element_name_nb,
 	ONET.element_description_en,
-    NB.description_nb AS description_nb,
+	NB.description_nb AS description_nb,
 	(ONET.l_data_value*(100/7)) AS l_data_value,
 	(ONET.l_se*(100/7)) AS l_se,
 	(ONET.l_lower_ci*(100/7)) AS l_lower_ci,
@@ -514,9 +526,11 @@ SELECT
 	ONET.i_recommend_suppress,
 	ONET.i_not_relevant,
 	ONET.date_updated,
-	ONET.domain_source
+	ONET.domain_source,
+	IFNULL(UNO.onet_uno_category_nb, '') AS onet_uno_category_nb
 FROM v_work_activities ONET
 LEFT JOIN content_model_reference_nb NB ON (ONET.element_id = NB.element_id)
+LEFT JOIN onet_uno_category_nb UNO ON (UNO.element_id = ONET.element_id)
 ; # 39524 rows inserted.
 
 
@@ -550,9 +564,11 @@ SELECT
 	'' AS i_recommend_suppress,
 	'' AS i_not_relevant,
 	ONET.date_updated,
-	ONET.domain_source
+	ONET.domain_source,
+	IFNULL(UNO.onet_uno_category_nb, '') AS onet_uno_category_nb
 FROM v_interests ONET
 LEFT JOIN content_model_reference_nb NB ON (ONET.element_id = NB.element_id)
+LEFT JOIN onet_uno_category_nb UNO ON (UNO.element_id = ONET.element_id)
 WHERE scale_name = 'Occupational Interests'
 -- sjekk opp hva brukes "Occupational Interest High-Point" til?
 -- ORDER BY RAND()

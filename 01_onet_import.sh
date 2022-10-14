@@ -81,6 +81,11 @@ mysql -Donet -e "LOAD DATA INFILE '/tmp/translations/occupation_data_nb.tsv' REP
 mysql -Donet -e "SELECT 'ant. oversettinger fra occupation_data_nb ' AS kilde, COUNT(*) FROM occupation_data_nb"
 echo "import of occupation_data_nb"
 
+mysql -Donet -e "TRUNCATE onet_uno_category_nb"
+mysql -Donet -e "LOAD DATA INFILE '/tmp/translations/onet_uno_category_nb.tsv' REPLACE INTO TABLE onet_uno_category_nb FIELDS TERMINATED BY '\t' ENCLOSED BY '\"' IGNORE 1 LINES"
+mysql -Donet -e "SELECT 'ant. oversettinger fra occupation_data_nb ' AS kilde, COUNT(*) FROM onet_uno_category_nb"
+echo "import of occupation_data_nb"
+
 # set new wd
 cd ..
 
