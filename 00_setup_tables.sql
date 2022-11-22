@@ -19,8 +19,7 @@ CREATE TABLE content_model_reference_nb (
 	description_nb varchar(512) DEFAULT NULL,
 	changed date NOT NULL COMMENT 'dato siste endring',
 	PRIMARY KEY (element_id)
-) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci
-COMMENT='O*Net online content_model_reference translated to Norwegian (bokmål)'
+) COMMENT='O*Net online content_model_reference translated to Norwegian (bokmål)'
  ; 
 
 
@@ -40,9 +39,8 @@ CREATE TABLE dwa_reference_nb (
 	KEY element_id (element_id),
 	KEY dwa_title_NO (dwa_title_nb),
 	KEY dwa_title (dwa_title)
-) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci
-COMMENT='O*Net online dwa_reference translated to Norwegian (bokmål)'
- ; 
+) COMMENT='O*Net online dwa_reference translated to Norwegian (bokmål)'
+; 
 
 
 -- Provide each Intermediate Work Activity.
@@ -59,9 +57,8 @@ CREATE TABLE iwa_reference_nb (
 	KEY element_id (element_id),
 	KEY iwa_title (iwa_title),
 	KEY iwa_title_nb (iwa_title_nb)
-) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci
-COMMENT='O*Net online iwa_reference translated to Norwegian (bokmål)'
- ; 
+) COMMENT='O*Net online iwa_reference translated to Norwegian (bokmål)'
+; 
 
 
 -- Provide O*NET-SOC codes, titles, and descriptions.
@@ -78,15 +75,13 @@ CREATE TABLE occupation_data_nb (
 	PRIMARY KEY (onetsoc_code),
 	KEY title (title),
 	KEY title_nb (title_nb)
-) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci
-COMMENT='O*Net online occupation_data translated to Norwegian (bokmål)'
- ; 
+) COMMENT='O*Net online occupation_data translated to Norwegian (bokmål)'
+; 
 
 DROP TABLE IF EXISTS onet_uno_category_nb ;
 CREATE TABLE onet_uno_category_nb (
 	element_id varchar(16) NOT NULL,
 	onet_uno_category varchar(255) NOT NULL,
 	PRIMARY KEY (element_id)
-) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci
-COMMENT='categories used by Utdanning.no'
+) COMMENT='categories used by Utdanning.no'
 ;
