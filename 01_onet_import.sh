@@ -12,7 +12,7 @@ echo "Download from https://www.onetcenter.org/database.html#all-files"
 # Settings. These must be set before import
 
 # location of zipped database files of current onet release
-onet_url="https://www.onetcenter.org/dl_files/database/db_27_1_mysql.zip"
+onet_url="https://www.onetcenter.org/dl_files/database/db_27_2_mysql.zip"
 # my working directory. Also location of these Git-files
 # change or comment out if you use somewhere else!
 # cd srv/onet_labour_market_stat
@@ -32,6 +32,12 @@ rm *.zip
 # empty/re-create database
 mysql -e "DROP DATABASE IF EXISTS onet" && echo "Database onet removed "
 mysql -e "CREATE DATABASE IF NOT EXISTS onet" && echo "Database onet (re-)created "
+
+# create tables 
+
+pwd
+
+mysql -Donet < ../00_setup_tables.sql && echo "tables created "
 
 # only import sql-files starting with two digits and underscore.
 # merge these into one file, onet_db_all.sql
@@ -86,14 +92,14 @@ mysql -Donet -e "LOAD DATA INFILE '/tmp/translations/onet_uno_category_nb.tsv' R
 mysql -Donet -e "SELECT 'ant. oversettinger fra occupation_data_nb ' AS kilde, COUNT(*) FROM onet_uno_category_nb"
 echo "import of occupation_data_nb"
 
-# set new wd
-cd ..
+
+pwd
 
 # compare translated strings to new import
-mysql -Donet < 04_translation_maintenance.sql
-echo "number of entities which may need translation "
+mysql -Donet < 04_translation_maintenance.sql && echo "number of entities which may need translation "
 
-
+# set new wd
+cd ..
 
  
 
