@@ -81,7 +81,7 @@ CREATE TABLE occupation_data_nb (
 DROP TABLE IF EXISTS onet_uno_category_nb ;
 CREATE TABLE onet_uno_category_nb (
 	element_id varchar(16) NOT NULL,
-	onet_uno_category varchar(255) NOT NULL,
+	onet_uno_category_nb varchar(255) NOT NULL,
 	PRIMARY KEY (element_id)
 ) COMMENT='categories used by Utdanning.no'
 ;
