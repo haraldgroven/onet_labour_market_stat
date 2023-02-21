@@ -61,3 +61,7 @@ Icon
 .VolumeIcon.icns
 .com.apple.timemachine.donotpresent
 onet_db_all.sql
+.idea/modules.xml
+.idea/onet_labour_market_stat.iml
+.idea/vcs.xml
+package-lock.json
