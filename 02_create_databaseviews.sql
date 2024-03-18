@@ -323,8 +323,7 @@ CREATE TABLE IF NOT EXISTS x_usbls_survey_soc (
   date_updated date DEFAULT NULL COMMENT 'sist oppdaterte data',
   domain_source varchar(128) NOT NULL COMMENT 'kilde for data',
   onet_uno_category_nb varchar(128) NOT NULL COMMENT 'overkategorier på interessesider utdanning.no',
- -- PRIMARY KEY (lnr),
- UNIQUE(soc_kode, element_id),
+ PRIMARY KEY (soc_kode, element_id),
  KEY soc_code (soc_kode),
  KEY soc_yrke_en (soc_yrke_en),
  KEY onet_type (onet_type),
@@ -338,7 +337,7 @@ CREATE TABLE IF NOT EXISTS x_usbls_survey_soc (
 -- insert abilities into x_usbls_survey_soc
 INSERT INTO x_usbls_survey_soc
 SELECT
-	-- NULL AS lnr,
+
 	ONET.soc_kode,
 	ONET.soc_yrke_en,
 	'' AS soc_yrke_nb,
@@ -371,7 +370,7 @@ LEFT JOIN onet_uno_category_nb UNO ON (UNO.element_id = ONET.element_id)
 -- insert knowledge into x_usbls_survey_soc
 INSERT INTO x_usbls_survey_soc
 SELECT
-	-- NULL AS lnr,
+
 	ONET.soc_kode,
 	ONET.soc_yrke_en,
 	'' AS soc_yrke_nb,
@@ -404,7 +403,7 @@ LEFT JOIN onet_uno_category_nb UNO ON (UNO.element_id = ONET.element_id)
 -- insert skills into x_usbls_survey_soc
 INSERT INTO x_usbls_survey_soc
 SELECT
-	-- NULL AS lnr,
+
 	ONET.soc_kode,
 	ONET.soc_yrke_en,
 	'' AS soc_yrke_nb,
@@ -438,7 +437,7 @@ LEFT JOIN onet_uno_category_nb UNO ON (UNO.element_id = ONET.element_id)
 -- insert work_styles into x_usbls_survey_soc
 INSERT INTO x_usbls_survey_soc
 SELECT
-	-- NULL AS lnr,
+
 	ONET.soc_kode,
 	ONET.soc_yrke_en,
 	'' AS soc_yrke_nb,
@@ -471,7 +470,7 @@ LEFT JOIN onet_uno_category_nb UNO ON (UNO.element_id = ONET.element_id)
 -- insert work_values into x_usbls_survey_soc
 INSERT INTO x_usbls_survey_soc
 SELECT
-	-- NULL AS lnr,
+
 	ONET.soc_kode,
 	ONET.soc_yrke_en,
 	'' AS soc_yrke_nb,
@@ -799,7 +798,7 @@ CREATE TABLE x_usa_detailed_work_activity (
 -- insert from tasks_to_dwas to x_usa_detailed_work_activity
 INSERT INTO x_usa_detailed_work_activity
 SELECT
-	-- NULL AS lnr,
+
 	T.onetsoc_code AS soc_kode,
 	SOC.title AS soc_yrke_en,
 	'tasks_to_dwas' AS onet_type,
@@ -894,7 +893,7 @@ CREATE TABLE x_usbls_occupations_soc (
 
 INSERT INTO x_usbls_occupations_soc
 SELECT
- 	-- NULL AS lnr,
+ 
 	onetsoc_code AS soc_kode,
     title,
 	description
