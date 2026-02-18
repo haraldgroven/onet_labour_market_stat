@@ -7,7 +7,7 @@ USE onet ;
 
 
 -- Provide O*NET Content Model elements.
--- https://www.onetcenter.org/dictionary/26.2/mysql/content_model_reference.html
+-- https://www.onetcenter.org/dictionary/28.3/mysql/content_model_reference.html
 
 DROP TABLE IF EXISTS content_model_reference_nb ; 
 CREATE TABLE content_model_reference_nb (
@@ -24,7 +24,7 @@ CREATE TABLE content_model_reference_nb (
 
 
 -- Provide each Detailed Work Activity.
--- https://www.onetcenter.org/dictionary/26.2/mysql/dwa_reference.html
+-- https://www.onetcenter.org/dictionary/28.3/mysql/dwa_reference.html
 
 DROP TABLE IF EXISTS dwa_reference_nb ; 
 CREATE TABLE dwa_reference_nb (
@@ -44,7 +44,7 @@ CREATE TABLE dwa_reference_nb (
 
 
 -- Provide each Intermediate Work Activity.
--- https://www.onetcenter.org/dictionary/26.2/mysql/iwa_reference.html
+-- https://www.onetcenter.org/dictionary/28.3/mysql/iwa_reference.html
 
 DROP TABLE IF EXISTS iwa_reference_nb ; 
 CREATE TABLE iwa_reference_nb (
@@ -62,7 +62,7 @@ CREATE TABLE iwa_reference_nb (
 
 
 -- Provide O*NET-SOC codes, titles, and descriptions.
--- https://www.onetcenter.org/dictionary/26.2/mysql/occupation_data.html
+-- https://www.onetcenter.org/dictionary/28.3/mysql/occupation_data.html
 
 DROP TABLE IF EXISTS occupation_data_nb ; 
 CREATE TABLE occupation_data_nb (
