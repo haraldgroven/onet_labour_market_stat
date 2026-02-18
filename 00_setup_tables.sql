@@ -12,7 +12,7 @@ USE onet ;
 DROP TABLE IF EXISTS content_model_reference_nb ; 
 CREATE TABLE content_model_reference_nb (
 	element_id char(16) NOT NULL COMMENT 'ID',
-	onettype varchar(16) NOT NULL COMMENT 'innholdstype strengen er henta fra',
+	onettype varchar(128) NOT NULL COMMENT 'innholdstype strengen er henta fra',
 	element_name varchar(128) NOT NULL,
 	element_name_nb varchar(128) DEFAULT NULL,
 	description varchar(512) NOT NULL,
