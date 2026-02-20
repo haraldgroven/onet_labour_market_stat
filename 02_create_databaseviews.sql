@@ -215,6 +215,42 @@ INNER JOIN content_model_reference CMR ON (T.element_id = CMR.element_id)
 ;
 
 
+
+-- work_context 
+CREATE OR REPLACE VIEW v_work_context AS
+
+SELECT
+	T.onetsoc_code AS soc_kode,
+	O.title AS soc_yrke_en,
+	'work_context' AS onet_type,
+	T.element_id AS element_id,
+	CMR.element_name AS element_name_en,
+	CMR.description AS element_description_en,
+	T.data_value AS l_data_value,
+	T.standard_error AS l_se,
+	T.lower_ci_bound AS l_lower_ci,
+	T.upper_ci_bound AS l_upper_ci,
+	T.n AS l_n,
+	T.recommend_suppress AS l_recommend_suppress,
+	T.not_relevant AS l_not_relevant,
+	T.data_value AS i_data_value,
+	T.standard_error AS i_se,
+	T.lower_ci_bound AS i_lower_ci,
+	T.upper_ci_bound AS i_upper_ci,
+	T.n AS i_n,
+	T.recommend_suppress AS i_recommend_suppress,
+	T.not_relevant AS i_not_relevant,
+	T.date_updated AS date_updated,
+	T.domain_source AS domain_source
+FROM work_context T
+INNER JOIN content_model_reference CMR ON (CMR.element_id = T.element_id)
+INNER JOIN occupation_data O ON (O.onetsoc_code = T.onetsoc_code )
+-- CX is a dscale from 1 to 5
+WHERE T.scale_id = 'CX'
+;
+
+
+
 -- work_values
 CREATE OR REPLACE VIEW v_work_values AS
 
@@ -531,6 +567,40 @@ FROM v_work_activities ONET
 LEFT JOIN content_model_reference_nb NB ON (ONET.element_id = NB.element_id)
 LEFT JOIN onet_uno_category_nb UNO ON (UNO.element_id = ONET.element_id)
 ; # 39524 rows inserted.
+
+
+
+-- insert work_context into x_usbls_survey_soc
+INSERT INTO x_usbls_survey_soc
+SELECT
+	ONET.soc_kode,
+	ONET.soc_yrke_en,
+	'' AS soc_yrke_nb,
+	ONET.onet_type,
+	ONET.element_id,
+	ONET.element_name_en,
+	NB.element_name_nb AS element_name_nb,
+	ONET.element_description_en,
+	NB.description_nb AS description_nb,
+	((l_data_value-1)*25) AS l_data_value,
+	(l_se*25) AS l_se,
+	((l_lower_ci-1)*25) AS l_lower_ci,
+	((l_upper_ci-1)*25) AS l_upper_ci,
+	l_recommend_suppress,
+	l_not_relevant,
+	((l_data_value-1)*25) AS i_data_value,
+	(l_se*25) AS i_se,
+	((l_lower_ci-1)*25) AS i_lower_ci,
+	((l_upper_ci-1)*25) AS i_upper_ci,
+	i_recommend_suppress,
+	i_not_relevant,
+	date_updated,
+	domain_source,
+	IFNULL(UNO.onet_uno_category_nb, '') AS onet_uno_category_nb
+FROM v_work_context ONET
+LEFT JOIN content_model_reference_nb NB ON (NB.element_id = ONET.element_id)
+LEFT JOIN onet_uno_category_nb UNO ON (UNO.element_id = ONET.element_id)
+; # 49170 rows inserted.
 
 
 
