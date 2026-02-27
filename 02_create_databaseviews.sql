@@ -7,6 +7,8 @@ USE onet ;
 
 
 -- abilities
+SELECT "CREATE VIEW v_abilities " AS logg ; 
+
 CREATE OR REPLACE VIEW v_abilities AS
 
 SELECT
@@ -49,8 +51,9 @@ INNER JOIN content_model_reference CMR ON (T.element_id = CMR.element_id)
 
 
 
-
 -- knowledge
+SELECT "CREATE VIEW v_knowledge " AS logg ; 
+
 CREATE OR REPLACE VIEW v_knowledge AS
 
 SELECT
@@ -93,6 +96,9 @@ INNER JOIN content_model_reference CMR ON (T.element_id = CMR.element_id)
 
 
 -- skills
+
+SELECT "CREATE VIEW v_skills " AS logg ; 
+
 CREATE OR REPLACE VIEW v_skills AS
 
 SELECT
@@ -136,6 +142,9 @@ INNER JOIN content_model_reference CMR ON (T.element_id = CMR.element_id)
 
 
 -- work_activities
+
+SELECT "CREATE VIEW v_work_activities " AS logg ; 
+
 CREATE OR REPLACE VIEW v_work_activities AS
 
 SELECT
@@ -179,7 +188,13 @@ INNER JOIN content_model_reference CMR ON (T.element_id = CMR.element_id)
 
 
 -- work_styles
-CREATE OR REPLACE VIEW v_work_styles AS
+
+-- Only data for Distinctiveness Rank
+-- Identifies what specific traits make the job unique 
+
+SELECT "CREATE VIEW v_work_styles Distinctiveness Rank" AS logg ; 
+
+CREATE OR REPLACE VIEW v_work_styles_distinctiveness_rank AS
 
 SELECT
 	T.onetsoc_code AS soc_kode,
@@ -189,8 +204,9 @@ SELECT
 	T.element_id,
 	CMR.element_name AS element_name_en,
 	CMR.description AS element_description_en,
-	-- T.scale_id,
-	NULL AS l_data_value,
+	-- T.scale_id, SR.minimum, SR.maximum ,
+	SR.scale_name, 
+	T.data_value AS l_data_value,
 	NULL AS l_se,
 	NULL AS l_lower_ci,
 	NULL AS l_upper_ci,
@@ -199,24 +215,78 @@ SELECT
 	NULL AS l_not_relevant,
 	-- IM.scale_id,
 	T.data_value AS i_data_value,
-	T.standard_error AS i_se,
-	T.lower_ci_bound AS i_lower_ci,
-	T.upper_ci_bound AS i_upper_ci,
-	T.n AS i_n,
-	T.recommend_suppress AS i_recommend_suppress,
+	NULL AS i_se,
+	NULL AS i_lower_ci,
+	NULL AS i_upper_ci,
+	NULL AS i_n,
+	NULL AS i_recommend_suppress,
 	NULL AS i_not_relevant,
 	T.date_updated,
 	T.domain_source
 FROM work_styles T
 INNER JOIN occupation_data SOC ON (T.onetsoc_code = SOC.onetsoc_code)
 INNER JOIN content_model_reference CMR ON (T.element_id = CMR.element_id)
+INNER JOIN scales_reference SR ON (SR.scale_id = T.scale_id)
+WHERE T.scale_id = 'DR'
+-- WHERE T.onetsoc_code = "15-1134.00" # eksempelyrke
+-- ORDER BY RAND() LIMIT 1000
+;
+
+
+-- Work Styles Impact
+-- Determines if a trait helps or hurts overall job performance 
+
+SELECT "CREATE VIEW v_work_styles Work Styles Impact" AS logg ; 
+
+
+
+CREATE OR REPLACE VIEW v_work_styles_work_styles_impact AS
+
+SELECT
+	T.onetsoc_code AS soc_kode,
+	SOC.title AS soc_yrke_en,
+	-- SOC.description AS soc_description,
+	'work_styles_impact' AS onet_type,
+	T.element_id,
+	CMR.element_name AS element_name_en,
+	CMR.description AS element_description_en,
+	-- T.scale_id, SR.minimum, SR.maximum ,
+	SR.scale_name, 
+	T.data_value AS l_data_value,
+	NULL AS l_se,
+	NULL AS l_lower_ci,
+	NULL AS l_upper_ci,
+	NULL AS l_n,
+	NULL AS l_recommend_suppress,
+	NULL AS l_not_relevant,
+	-- IM.scale_id,
+	T.data_value AS i_data_value,
+	NULL AS i_se,
+	NULL AS i_lower_ci,
+	NULL AS i_upper_ci,
+	NULL AS i_n,
+	NULL AS i_recommend_suppress,
+	NULL AS i_not_relevant,
+	T.date_updated,
+	T.domain_source
+FROM work_styles T
+INNER JOIN occupation_data SOC ON (T.onetsoc_code = SOC.onetsoc_code)
+INNER JOIN content_model_reference CMR ON (T.element_id = CMR.element_id)
+INNER JOIN scales_reference SR ON (SR.scale_id = T.scale_id)
+WHERE T.scale_id = 'WI'
 -- WHERE T.onetsoc_code = "15-1134.00" # eksempelyrke
 -- ORDER BY RAND() LIMIT 1000
 ;
 
 
 
+
+
+
 -- work_context 
+
+SELECT "CREATE VIEW v_work_context " AS logg ; 
+
 CREATE OR REPLACE VIEW v_work_context AS
 
 SELECT
@@ -252,6 +322,11 @@ WHERE T.scale_id = 'CX'
 
 
 -- work_values
+
+-- TO scales EX Extent og VH Work Value High-Point
+
+SELECT "CREATE VIEW v_work_values " AS logg ; 
+
 CREATE OR REPLACE VIEW v_work_values AS
 
 SELECT
@@ -271,7 +346,7 @@ SELECT
 	NULL AS l_recommend_suppress,
 	NULL AS l_not_relevant,
 	-- IM.scale_id,
-	NULL AS i_data_value,
+	T.data_value AS i_data_value,
 	NULL AS i_se,
 	NULL AS i_lower_ci,
 	NULL AS i_upper_ci,
@@ -288,10 +363,17 @@ INNER JOIN content_model_reference CMR ON (T.element_id = CMR.element_id)
 ;
 
 
+
+
+
 -- NOTETOSELF
 -- Views som lister opp data, først de som vi skal benytte, deretter de som vi har lite bruk for.
 
+
 -- interests
+
+SELECT "CREATE VIEW v_interests " AS logg ; 
+
 CREATE OR REPLACE VIEW v_interests AS
 
 SELECT
@@ -315,6 +397,9 @@ LEFT JOIN onet_uno_category_nb UNO ON (UNO.element_id = T.element_id)
 
 
 -- alternate_titles
+
+SELECT "CREATE VIEW v_alternate_titles " AS logg ; 
+
 CREATE OR REPLACE VIEW v_alternate_titles AS
 
 SELECT
@@ -325,11 +410,20 @@ SELECT
 	T.alternate_title, T.short_title, T.sources
 FROM alternate_titles T
 INNER JOIN occupation_data SOC ON (T.onetsoc_code = SOC.onetsoc_code)
-
 -- WHERE T.onetsoc_code = "15-1134.00" # eksempelyrke
 ;
 
 
+
+
+
+
+
+
+
+
+
+SELECT "CREATE TABLE x_usbls_survey_soc" AS logg ; 
 
 -- x_usbls_survey_soc
 DROP TABLE IF EXISTS x_usbls_survey_soc ;
@@ -339,11 +433,11 @@ CREATE TABLE IF NOT EXISTS x_usbls_survey_soc (
   soc_yrke_en varchar(255) NOT NULL COMMENT 'SOC-kategori opprinnelig',
   soc_yrke_nb varchar(255) NOT NULL COMMENT 'SOC-kategori vår oversetting',
   onet_type varchar(128) NOT NULL DEFAULT '' COMMENT 'fra hvilken tabell er dataene?',
-  element_id varchar(20) NOT NULL,
-  element_name_en varchar(255) NOT NULL,
-  element_name_nb varchar(255) NOT NULL,
+  element_id CHAR(32) NOT NULL,
+  element_name_en varchar(512) NOT NULL,
+  element_name_nb varchar(512),
   element_description_en varchar(1024) NOT NULL,
-  element_description_nb varchar(1024) NOT NULL,
+  element_description_nb varchar(1024),
   l_data_value decimal(5,2) DEFAULT NULL COMMENT 'verdi for level i spørreundersøkelsen',
   l_se decimal(5,2) DEFAULT NULL COMMENT 'statistisk standardfeil i level',
   l_lower_ci decimal(5,2) DEFAULT NULL COMMENT 'nedre konfidensinterval i level',
@@ -358,7 +452,7 @@ CREATE TABLE IF NOT EXISTS x_usbls_survey_soc (
   i_not_relevant varchar(255) DEFAULT NULL,
   date_updated date DEFAULT NULL COMMENT 'sist oppdaterte data',
   domain_source varchar(128) NOT NULL COMMENT 'kilde for data',
-  onet_uno_category_nb varchar(128) NOT NULL COMMENT 'overkategorier på interessesider utdanning.no',
+  onet_uno_category_nb varchar(1024) COMMENT 'overkategorier på interessesider utdanning.no',
  PRIMARY KEY (soc_kode, element_id),
  KEY soc_code (soc_kode),
  KEY soc_yrke_en (soc_yrke_en),
@@ -371,6 +465,9 @@ CREATE TABLE IF NOT EXISTS x_usbls_survey_soc (
 
 
 -- insert abilities into x_usbls_survey_soc
+
+SELECT "INSERT v_abilities INTO x_usbls_survey_soc" AS logg ; 
+
 INSERT INTO x_usbls_survey_soc
 SELECT
 
@@ -403,7 +500,12 @@ LEFT JOIN content_model_reference_nb NB ON (NB.element_id = ONET.element_id)
 LEFT JOIN onet_uno_category_nb UNO ON (UNO.element_id = ONET.element_id)
 ; # 50128 rows inserted.
 
+
+
 -- insert knowledge into x_usbls_survey_soc
+
+SELECT "INSERT v_knowledge INTO x_usbls_survey_soc" AS logg ; 
+
 INSERT INTO x_usbls_survey_soc
 SELECT
 
@@ -437,6 +539,9 @@ LEFT JOIN onet_uno_category_nb UNO ON (UNO.element_id = ONET.element_id)
 ; # 31812 rows inserted.
 
 -- insert skills into x_usbls_survey_soc
+
+SELECT "INSERT v_skills INTO x_usbls_survey_soc" AS logg ; 
+
 INSERT INTO x_usbls_survey_soc
 SELECT
 
@@ -471,6 +576,9 @@ LEFT JOIN onet_uno_category_nb UNO ON (UNO.element_id = ONET.element_id)
 
 
 -- insert work_styles into x_usbls_survey_soc
+
+SELECT "INSERT v_work_styles INTO x_usbls_survey_soc" AS logg ; 
+
 INSERT INTO x_usbls_survey_soc
 SELECT
 
@@ -498,12 +606,15 @@ SELECT
 	date_updated,
 	domain_source,
 	IFNULL(UNO.onet_uno_category_nb, '') AS onet_uno_category_nb
-FROM v_work_styles ONET
+FROM v_work_styles_distinctiveness_rank ONET
 LEFT JOIN content_model_reference_nb NB ON (NB.element_id = ONET.element_id)
 LEFT JOIN onet_uno_category_nb UNO ON (UNO.element_id = ONET.element_id)
 ; # 15408 rows inserted.
 
 -- insert work_values into x_usbls_survey_soc
+
+SELECT "INSERT v_work_values INTO x_usbls_survey_soc" AS logg ; 
+
 INSERT INTO x_usbls_survey_soc
 SELECT
 
@@ -537,6 +648,9 @@ LEFT JOIN onet_uno_category_nb UNO ON (UNO.element_id = ONET.element_id)
 ; # 8766 rows inserted.
 
 -- insert work_activities into x_usbls_survey_soc
+
+SELECT "INSERT v_work_activities INTO x_usbls_survey_soc" AS logg ; 
+
 INSERT INTO x_usbls_survey_soc
 SELECT
 	ONET.soc_kode,
@@ -571,6 +685,9 @@ LEFT JOIN onet_uno_category_nb UNO ON (UNO.element_id = ONET.element_id)
 
 
 -- insert work_context into x_usbls_survey_soc
+
+SELECT "INSERT v_work_context INTO x_usbls_survey_soc" AS logg ; 
+
 INSERT INTO x_usbls_survey_soc
 SELECT
 	ONET.soc_kode,
@@ -606,6 +723,9 @@ LEFT JOIN onet_uno_category_nb UNO ON (UNO.element_id = ONET.element_id)
 
 -- TODO
 -- insert interests into x_usbls_survey_soc
+
+SELECT "INSERT v_interests INTO x_usbls_survey_soc" AS logg ; 
+
 INSERT INTO x_usbls_survey_soc
 SELECT
 	ONET.soc_kode,
@@ -711,57 +831,6 @@ SELECT
 FROM onet.v_occupation_data OD
 ;
 
-
--- work_values
-CREATE OR REPLACE VIEW v_work_values AS
-
-SELECT
-	T.onetsoc_code AS soc_kode,
-	SOC.title AS soc_yrke_en,
-	'work_values' AS onet_type,
-	-- SOC.description AS soc_description,
-	T.data_value,
-	-- T.element_id,
-	CMR.element_name, CMR.description,
-	-- T.scale_id,
-	SR.scale_name, SR.minimum, SR.maximum,
-	T.date_updated, T.domain_source
-FROM work_values T
-INNER JOIN occupation_data SOC ON (T.onetsoc_code = SOC.onetsoc_code)
-INNER JOIN content_model_reference CMR ON (T.element_id = CMR.element_id)
-INNER JOIN scales_reference SR ON (T.scale_id = SR.scale_id)
--- WHERE T.onetsoc_code = "15-1134.00" # eksempelyrke
-;
-
-
-
--- work_styles
-CREATE OR REPLACE VIEW v_work_styles AS
-
-SELECT
-	T.onetsoc_code AS soc_kode,
-	SOC.title AS soc_yrke_en,
-	'work_styles' AS onet_type,
-	-- SOC.description AS soc_description,
-	-- T.element_id,
-	CMR.element_name AS element_name_en,
-	CMR.description AS element_description_en,
-	-- T.scale_id,
-	SR.scale_name, SR.minimum, SR.maximum,
-	T.data_value,
-	T.n,
-	T.lower_ci_bound,
-	T.upper_ci_bound,
-	T.standard_error,
-	T.recommend_suppress,
-	T.date_updated,
-	T.domain_source
-FROM work_styles T
-INNER JOIN occupation_data SOC ON (T.onetsoc_code = SOC.onetsoc_code)
-INNER JOIN content_model_reference CMR ON (T.element_id = CMR.element_id)
-INNER JOIN scales_reference SR ON (T.scale_id = SR.scale_id)
--- WHERE T.onetsoc_code = "15-1134.00" # eksempelyrke
-;
 
 -- occupation_level_metadata
 CREATE OR REPLACE VIEW v_occupation_level_metadata AS
@@ -967,29 +1036,11 @@ SELECT
 	onetsoc_code AS soc_kode,
     title,
 	description
-FROM onet.occupation_data
+FROM occupation_data
 ;
 
 
-CREATE OR REPLACE VIEW v_work_context AS
-
-SELECT
-	T.onetsoc_code AS soc_kode,
-	SOC.title AS soc_yrke_en,
-	'work_context' AS onet_type,
-	-- SOC.description AS soc_description,
-	-- T.element_id,
-	WCC.scale_id AS work_context_categories_scale_id,
-	WCC.category AS work_context_categories_category,
-	WCC.category_description AS work_context_categories_description,
-	T.scale_id, T.category, T.data_value, T.n, T.lower_ci_bound, T.upper_ci_bound, T.standard_error,  T.recommend_suppress, T.not_relevant, T.date_updated, T.domain_source
-FROM work_context T
-INNER JOIN occupation_data SOC ON (T.onetsoc_code = SOC.onetsoc_code)
-INNER JOIN work_context_categories WCC ON (T.element_id = WCC.element_id)
--- WHERE T.onetsoc_code = "15-1134.00" # eksempelyrke
-;
-
-
+ 
 
 -- job_zones
 CREATE OR REPLACE VIEW v_job_zones AS
