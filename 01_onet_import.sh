@@ -49,12 +49,14 @@ mysql -Donet < onet_db_all.sql && echo "finished importing downloaded data from 
 # move to wd onet_labour_market_stat/
 cd ..
 
-# c
-mysql -Donet < 02_create_databaseviews.sql && echo "created database views "
+# 
+echo "trying to create database views "
+mysql -Donet < 02_create_databaseviews.sql && echo "creation of database views completed "
 
 # download tables for storing Norwegian translations of content
 # curl -O "https://raw.githubusercontent.com/haraldgroven/onet_labour_market_stat/master/03_translation_storage.sql"
 
+echo "trying to create tables for translation_storage "
 mysql -D onet < 03_translation_storage.sql && echo "finished creating tables from 03_translation_storage.sql "
 
 # clean up mess
