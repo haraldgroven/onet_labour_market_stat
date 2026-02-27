@@ -17,9 +17,9 @@ SELECT
 	Z.job_zone, 
 	-- oppdateringsdato 
 	NB.`changed`
-FROM onet.occupation_data O 
-LEFT JOIN onet.occupation_data_nb NB ON (O.onetsoc_code = NB.onetsoc_code) 
-LEFT JOIN onet.job_zones Z ON (O.onetsoc_code = Z.onetsoc_code)
+FROM occupation_data O 
+LEFT JOIN occupation_data_nb NB ON (O.onetsoc_code = NB.onetsoc_code) 
+LEFT JOIN job_zones Z ON (O.onetsoc_code = Z.onetsoc_code)
 ;
 
 
